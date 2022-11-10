@@ -14,10 +14,14 @@
     >
     </combat-log-vue>
 
-    <enemy-block-vue>
+    <enemy-block-vue
+    :attackSpeed="hero"
+    >
 
     </enemy-block-vue>
+    <button @click="upSpeed()" style="position:absolute; bottom: 0px;">Up speed</button>
   </div>
+  
 </template>
 
 <script>
@@ -43,8 +47,9 @@ export default {
         attack: 5,
         criticalChance: 0.1,
         criticalDamage: 1.5,
-        attackSpeed: 5000,
+        attackSpeed: 1000,
       },
+      heroAttackSpeed: 1000,
       combatLogs: [],
     }
   },
@@ -53,7 +58,7 @@ export default {
     setInterval(() => {
       this.battle()
 
-    }, this.hero.attackSpeed)
+    }, this.heroAttackSpeed)
   },
 
   methods: {
@@ -69,6 +74,11 @@ export default {
       return Math.floor(Math.random() * (max-min+1) + min)
     },
 
+    upSpeed() {
+      this.heroAttackSpeed = this.hero.attackSpeed -= 100
+      console.log(this.hero.attackSpeed + " " + this.heroAttackSpeed)
+    },
+
     combatlog(damageInfo, enemyHealth) {
       if (this.combatLogs.length > 20) {
         this.combatLogs.pop()
@@ -76,7 +86,8 @@ export default {
       } else {
         this.combatLogs.unshift(`You hit ${damageInfo} to enemy. Enemy have ${enemyHealth}`)
       }
-    }
+    },
+
   }
 
 }
